@@ -4,4 +4,8 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  base:
+    process.env.GITHUB_ACTIONS === 'true'
+      ? '/sunday-school-curriculum/'
+      : '/',
 })
