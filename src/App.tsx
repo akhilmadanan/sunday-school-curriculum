@@ -1,30 +1,14 @@
-import { AppBar, Button, Paper, Toolbar, Typography } from '@mui/material'
+import { Button, Paper, Typography } from '@mui/material'
+import AppBar from './components/AppBar'
 
 function App() {
   return (
     <div className="flex min-h-screen flex-col">
-      <AppBar position="static" color="transparent" elevation={0}>
-        <Toolbar className="mx-auto flex w-full max-w-6xl gap-3 px-6 py-3">
-          <div
-            aria-hidden="true"
-            className="grid size-9 place-items-center rounded-full bg-[#1e3a8a] font-semibold text-lg text-white"
-          >
-            S
-          </div>
-          <Typography variant="subtitle1" className="font-bold text-[#1e3a8a]">
-            Sunday School
-          </Typography>
-          <Typography aria-hidden="true" className="text-[#94a3b8]">
-            /
-          </Typography>
-          <Typography variant="body2" className="text-[#475569]">
-            Curriculum
-          </Typography>
-        </Toolbar>
-      </AppBar>
+      <AppBar />
 
-      <main className="mx-auto flex w-full max-w-6xl flex-1 items-center px-6 py-16">
+      <main id="home" className="mx-auto flex w-full max-w-6xl flex-1 items-center px-6 py-16">
         <section
+          id="curriculum"
           aria-labelledby="welcome-title"
           className="grid w-full items-center gap-12 md:grid-cols-[1.2fr_0.8fr]"
         >
