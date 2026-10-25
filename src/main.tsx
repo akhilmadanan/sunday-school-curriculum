@@ -8,18 +8,32 @@ import App from './App.tsx'
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#355b47',
+      main: '#1e3a8a',
     },
     secondary: {
-      main: '#a36d37',
+      main: '#3b82f6',
+    },
+    warning: {
+      main: '#f59e0b',
+      contrastText: '#0f172a',
     },
     background: {
-      default: '#f8f6ef',
-      paper: '#fffdf8',
+      default: '#f8fafc',
+      paper: '#ffffff',
+    },
+    text: {
+      primary: '#0f172a',
+      secondary: '#475569',
     },
   },
   typography: {
-    fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
+    fontFamily: "'Inter', ui-sans-serif, system-ui, sans-serif",
+    h1: { fontFamily: "'Poppins', ui-sans-serif, system-ui, sans-serif" },
+    h2: { fontFamily: "'Poppins', ui-sans-serif, system-ui, sans-serif" },
+    h3: { fontFamily: "'Poppins', ui-sans-serif, system-ui, sans-serif" },
+    h4: { fontFamily: "'Poppins', ui-sans-serif, system-ui, sans-serif" },
+    h5: { fontFamily: "'Poppins', ui-sans-serif, system-ui, sans-serif" },
+    h6: { fontFamily: "'Poppins', ui-sans-serif, system-ui, sans-serif" },
   },
 })
 
