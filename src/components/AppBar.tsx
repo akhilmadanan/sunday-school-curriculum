@@ -1,10 +1,14 @@
 import { AppBar as MuiAppBar, Button, Toolbar, Typography } from '@mui/material'
+import type { MouseEventHandler } from 'react'
 
 type AppBarProps = {
   page: 'home' | 'curriculum'
+  onNavigate: MouseEventHandler<HTMLAnchorElement>
 }
 
-function AppBar({ page }: AppBarProps) {
+function AppBar({ page, onNavigate }: AppBarProps) {
+  const homePath = `${import.meta.env.BASE_URL}home`
+  const curriculumPath = `${homePath}/curriculum`
   const linkClass =
     'whitespace-nowrap rounded-xl px-2 py-2 text-xs font-semibold transition hover:bg-white sm:px-4 sm:text-sm'
 
@@ -12,7 +16,12 @@ function AppBar({ page }: AppBarProps) {
     <MuiAppBar position="static" color="transparent" elevation={0}>
       <Toolbar className="mx-auto flex w-full max-w-6xl flex-wrap gap-3 px-4 py-3 sm:gap-4 sm:px-6 sm:py-4">
         <div className="flex min-w-0 flex-1 items-center gap-3">
-          <a href="/" aria-label="Sunday School home" className="flex items-center gap-3 no-underline">
+          <a
+            href={homePath}
+            onClick={onNavigate}
+            aria-label="Sunday School home"
+            className="flex items-center gap-3 no-underline"
+          >
             <div
               aria-hidden="true"
               className="grid size-9 shrink-0 place-items-center rounded-full bg-[#1e3a8a] font-semibold text-lg text-white"
@@ -30,7 +39,8 @@ function AppBar({ page }: AppBarProps) {
           className="order-1 flex w-full items-center justify-between gap-1 rounded-2xl border border-[#bfdbfe] bg-[#eff6ff] p-1 sm:order-none sm:w-auto sm:justify-start"
         >
           <a
-            href="/"
+            href={homePath}
+            onClick={onNavigate}
             aria-current={page === 'home' ? 'page' : undefined}
             className={`${linkClass} ${
               page === 'home'
@@ -41,7 +51,8 @@ function AppBar({ page }: AppBarProps) {
             Home
           </a>
           <a
-            href="/curriculum"
+            href={curriculumPath}
+            onClick={onNavigate}
             aria-current={page === 'curriculum' ? 'page' : undefined}
             className={`${linkClass} ${
               page === 'curriculum'
@@ -51,7 +62,11 @@ function AppBar({ page }: AppBarProps) {
           >
             Curriculum
           </a>
-          <a href="/#learn-with-us" className={`${linkClass} text-[#1e3a8a]`}>
+          <a
+            href={`${homePath}#learn-with-us`}
+            onClick={onNavigate}
+            className={`${linkClass} text-[#1e3a8a]`}
+          >
             Learn with us
           </a>
         </nav>

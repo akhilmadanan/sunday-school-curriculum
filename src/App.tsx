@@ -1,8 +1,10 @@
+import { useEffect, useState } from 'react'
+import type { MouseEventHandler } from 'react'
 import { Button, Paper, Typography } from '@mui/material'
 import AppBar from './components/AppBar'
 import Curriculum from './components/Curriculum'
 
-function HomePage() {
+function HomePage({ onNavigate }: { onNavigate: MouseEventHandler<HTMLAnchorElement> }) {
   return (
     <main className="mx-auto flex w-full max-w-6xl flex-1 items-center px-4 py-12 sm:px-6 sm:py-16">
       <section
@@ -34,7 +36,8 @@ function HomePage() {
           </Typography>
           <Button
             component="a"
-            href="/curriculum"
+            href={`${import.meta.env.BASE_URL}home/curriculum`}
+            onClick={onNavigate}
             variant="contained"
             color="warning"
             className="mt-8 rounded-full px-6 py-3 font-bold normal-case text-[#0f172a] shadow-none"
@@ -63,12 +66,67 @@ function HomePage() {
 }
 
 function App() {
-  const page = window.location.pathname.replace(/\/+$/, '') === '/curriculum' ? 'curriculum' : 'home'
+  const basePath = import.meta.env.BASE_URL.replace(/\/$/, '')
+  const [pathname, setPathname] = useState(window.location.pathname)
+  const appPath = (basePath && (pathname === basePath || pathname.startsWith(`${basePath}/`))
+    ? pathname.slice(basePath.length)
+    : pathname
+  ).replace(/\/+$/, '') || '/'
+  const page = appPath === '/home/curriculum' || appPath === '/curriculum' ? 'curriculum' : 'home'
+  const canonicalPath =
+    appPath === '/' || appPath === '/home'
+      ? '/home'
+      : appPath === '/curriculum' || appPath === '/home/curriculum'
+        ? '/home/curriculum'
+        : '/home'
+
+  useEffect(() => {
+    const handlePopState = () => setPathname(window.location.pathname)
+    window.addEventListener('popstate', handlePopState)
+    return () => window.removeEventListener('popstate', handlePopState)
+  }, [])
+
+  useEffect(() => {
+    if (appPath !== canonicalPath) {
+      const canonicalUrl = `${import.meta.env.BASE_URL}${canonicalPath.slice(1)}`
+      window.history.replaceState(null, '', canonicalUrl)
+    }
+  }, [appPath, canonicalPath])
+
+  const handleNavigate: MouseEventHandler<HTMLAnchorElement> = (event) => {
+    if (
+      event.defaultPrevented ||
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey ||
+      event.currentTarget.target === '_blank' ||
+      event.currentTarget.hasAttribute('download')
+    ) {
+      return
+    }
+
+    const destination = new URL(event.currentTarget.href)
+    if (destination.origin !== window.location.origin) return
+
+    event.preventDefault()
+    window.history.pushState(null, '', destination)
+    setPathname(destination.pathname)
+
+    if (destination.hash) {
+      requestAnimationFrame(() => {
+        document.getElementById(decodeURIComponent(destination.hash.slice(1)))?.scrollIntoView()
+      })
+    } else {
+      window.scrollTo(0, 0)
+    }
+  }
 
   return (
     <div className="flex min-h-screen flex-col">
-      <AppBar page={page} />
-      {page === 'curriculum' ? <Curriculum /> : <HomePage />}
+      <AppBar page={page} onNavigate={handleNavigate} />
+      {page === 'curriculum' ? <Curriculum /> : <HomePage onNavigate={handleNavigate} />}
       <footer
         id="learn-with-us"
         className="mx-auto w-full max-w-6xl border-t border-[#e2e8f0] px-4 py-6 sm:px-6"
